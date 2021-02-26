@@ -3,7 +3,7 @@
 // @namespace   2c7e63c68903f0a8b63d7bfdd749d871
 // @description    InfoCompte
 // @vOGgame        7.9.9
-// @version        7.0.17
+// @version        7.0.17.stef
 // @author         Vulca & now benneb
 // @grant		   GM_getValue
 // @grant		   GM_setValue
@@ -21,7 +21,7 @@
 // @exclude        *.ogame*gameforge.com/game/index.php?page=displayMessageNewPage*
 // ==/UserScript==
 
-var Version = '7.0.17';
+var Version = '7.0.17.stef';
 //var numberUserscript = '133137';
 
 var start_time = (new Date()).getTime();
@@ -214,7 +214,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 					{
 						if(options.generale.mine)
 						{
-							var labels_url = text.Mines+"|"+text.Other_structure+"|"+text.Technology+"|"+text.Fleet+"|"+text.Defense;
+							var labels_url = text.Mines+"|"+text.Other_structure+"|"+text.Technology+"|"+text.Fleet+"|"+text.Defense+"|"+text.Dock;
 						}
 						if(options.generale.BatTotal)
 						{
@@ -1074,6 +1074,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 				Lune:'Moon',
 				Mines:'Mines',
 				Other_structure:'Other Structures',
+                Dock:'Dock',
 				Structure:'Structures',
 				Ressource:'Resources',
 				Facilities:'Facilities',
@@ -1093,6 +1094,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 				BBcode_debut:"Empire Composition:",
 				BBcode_debut2:"Total Points:",
 				BBcode_mine:"Points in Mines:",
+                BBcode_dock:"Points in Docks:",
 				BBcode_bat:"Points in Other Structures:",
 				BBcode_batT:"Points in Total Structures:",
 				BBcode_fin1:"Points in Technologies:",
@@ -1281,6 +1283,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						Lune:'Lune',
 						Mines:'Mines ',
 						Other_structure:'Autres bâtiments ',
+                        Dock:'Dock Spatial ',
 						Structure:'Bâtiments ',
 						Technology:'Recherche',
 						Technologies:'Technologies',
@@ -1300,11 +1303,12 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						BBcode_debut:'Détail de l\'investissement des points ',
 						BBcode_debut2:'Points totaux : ',
 						BBcode_mine:'Points mines : ',
+                        BBcode_dock:'Points docks : ',
 						BBcode_bat:'Points autres bâtiments : ',
 						BBcode_batT:'Points bâtiment : ',
-						BBcode_fin1:' Points technologie : ',
-						Bcode_fin2:' Points flotte : ',
-						BBcode_fin3:' Points défense : ',
+						BBcode_fin1:'Points technologie : ',
+						Bcode_fin2:'Points flotte : ',
+						BBcode_fin3:'Points défense : ',
 						BBcode_fin4:' Votre compte a ',
 						BBcode_fin5:' points indestructibles',
 						BBcode_fin6:' Progression moyenne : ',
@@ -2764,11 +2768,11 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						var exposant_tech = new Array(2,2,2,2,2,2,2,2,2,2,2,2,2,2,1.75);
 
 						var nom_bat = new Array(          'mmet', 'mcri' , 'mdet', 'ces', 'cef', 'nan', 'lab', 'ter', 'silo', 'depo', 'cspa','rob', 'hmet', 'hcri', 'hdet', 'base', 'phal', 'port', 'dock');
-						var prixInitial_bat            = new Array(0.075, 0.072,     0.3  ,0.105,   1.44 ,1600,  0.8 ,   150  , 41,     60,     0.7,  0.720  ,1,      1.5,    2,       80,     80,    8000,  2);
+						var prixInitial_bat = new Array(0.075,0.072,0.3,0.105,1.44,1600,0.8,150,41,60,0.7,0.72,1,1.5,2,80,80,8000,0.25);
 						var prixInitial_batMineMetal   = new Array(0.060, 0.048,     0.225,0.075,   0.9  ,1000,  0.2 ,   0    , 20,     20,     0.4,  0.4    ,1,      1,      1,       20,     20,    2000 , 0.2);
 						var prixInitial_batMineCristal = new Array(0.015, 0.024,     0.075,0.03 ,   0.36 ,500 ,  0.4 ,   50   , 20,     40,     0.2,  0.12   ,0,      0.5,    1,       40,     40,    4000 , 0);
 						var prixInitial_batMineDeut    = new Array(0    , 0    ,     0    ,0    ,   0.18 ,100 ,  0.2 ,   100  , 1 ,     0,      0.1,  0.2    ,0,      0,      0,       20,     20,    2000 , 0.05);
-						var exposant = new Array(1.5,1.6,1.5,1.5,1.8,2,2,2,2,2,2,2,2,2,2,2,2,2,2.3,2.3,2.3);
+						var exposant = new Array(1.5,1.6,1.5,1.5,1.8,2,2,2,2,2,2,2,2,2,2,2,2,2,5);
 
 						var OrdreBat = {'mmet':0, 'mcri':1 , 'mdet':2, 'ces':3, 'cef':4, 'nan':5, 'lab':6, 'ter':7, 'silo':8, 'depo':9, 'cspa':10,'rob':11, 'hmet':12, 'hcri':13, 'hdet':14, 'base':15, 'phal':16, 'port':17, 'dock':18}
 
@@ -3118,11 +3122,13 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						if(options.generale.BatTotal)
 						{
 							options.generale.AutreBat = false;
+                            options.generale.Dock = false;
 							options.generale.mine = false;
 						}
 						else
 						{
 							options.generale.AutreBat = true;
+                            options.generale.Dock = true;
 							options.generale.mine = true;
 						}
 
@@ -3133,6 +3139,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						var PointsBatimentsTotal =0;
 						var PointsMinesTotal=0;
 						var PointsDefTotal=0;
+                        var PointsDockTotal=0;
 						var pointLuneTotal = 0;
 						var PointsTechno= 0;
 						var PointsTechnoMetal= 0;
@@ -3144,6 +3151,10 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						var PointsBatimentsTotalCristalP =new Array();
 						var PointsBatimentsTotalDeutP    =new Array();
 
+                        var PointsDockTotalP        =new Array();
+						var PointsDockTotalMetalP   =new Array();
+						var PointsDockTotalDeutP    =new Array();
+
 						var PointsMinesTotalP        =new Array();
 						var PointsMinesTotalMetalP   =new Array();
 						var PointsMinesTotalCristalP =new Array();
@@ -3154,6 +3165,8 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						var PointsBatMetalTotal= 0;
 						var PointsBatCristalTotal= 0;
 						var PointsBatDeutTotal= 0;
+                        var PointsDockMetalTotal= 0;
+						var PointsDockDeutTotal= 0;
 
 						var PointsDefTotalP       =new Array();
 						var PointsDefTotalMetalP  =new Array();
@@ -3258,6 +3271,9 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							PointsBatimentsTotalCristalP[f]=0;
 							PointsBatimentsTotalDeutP[f]=0;
 
+                            PointsDockTotalP[f]=0;
+							PointsDockTotalMetalP[f]=0;
+							PointsDockTotalDeutP[f]=0;
 
 							PointsMinesTotalP[f]=0;
 							PointsMinesTotalMetalP[f]=0;
@@ -3287,6 +3303,15 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 									PointsMinesMetalTotal      += arrondiBat(prixInitial_batMineMetal[i]  *exp_build);
 									PointsMinesCristalTotal    += arrondiBat(prixInitial_batMineCristal[i]*exp_build);
 								}
+                                else if(i == nom_bat.length-1) //dernier bat = dock
+                                {
+                                    PointsDockTotalP[f]        += arrondiBat(prixInitial_bat[i]            *exp_build);
+									PointsDockTotalMetalP[f]   += arrondiBat(prixInitial_batMineMetal[i]   *exp_build);
+									PointsDockTotalDeutP[f]    += arrondiBat(prixInitial_batMineDeut[i]    *exp_build);
+
+									PointsDockMetalTotal   += arrondiBat(prixInitial_batMineMetal[i]  *exp_build);
+									PointsDockDeutTotal    += arrondiBat(prixInitial_batMineDeut[i]   *exp_build);
+                                }
 								else
 								{
 									PointsBatimentsTotalP[f]        += arrondiBat(prixInitial_bat[i]            *exp_build);
@@ -3314,6 +3339,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							}
 
 							PointsBatimentsTotal +=PointsBatimentsTotalP[f];
+                            PointsDockTotal +=PointsDockTotalP[f];
 							PointsMinesTotal+=PointsMinesTotalP[f];
 							PointsDefTotal+=PointsDefTotalP[f];
 						}
@@ -3330,8 +3356,8 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						if (PointsTechno < 0) PointsTechno= -1; // Page message pas visité
 
 
-						var PointPlanete = Math.round(PointsBatimentsTotalP[numeroplanete]+PointsMinesTotalP[numeroplanete]+PointsDefTotalP[numeroplanete]);
-
+						var PointPlanete = Math.round(PointsBatimentsTotalP[numeroplanete]+PointsMinesTotalP[numeroplanete]+PointsDefTotalP[numeroplanete]+PointsDockTotalP[numeroplanete]);
+                        console.log("planète : " + PointPlanete);
 						// ********************************* Prod/Jours  *****************************************
 
 						prod[0]= prod[0]*24;
@@ -3346,12 +3372,13 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						prodbrute[1]= prodbrute[1]*24;
 						prodbrute[2]= prodbrute[2]*24;
 
-						var PointsFlotteTotal = Math.round( PointsTotal-PointsTechno-PointsMinesTotal-PointsBatimentsTotal-PointsDefTotal);
+						var PointsFlotteTotal = Math.round( PointsTotal-PointsTechno-PointsMinesTotal-PointsBatimentsTotal-PointsDockTotal-PointsDefTotal);
 						GM_setValue(nomScript+"pointFlotte"+coordPM+serveur,PointsFlotteTotal+'');
 
-						PointIndest=Math.round(PointsMinesTotal+PointsBatimentsTotal+PointsTechno-pointLuneTotal);
+						PointIndest=Math.round(PointsMinesTotal+PointsBatimentsTotal+PointsTechno+PointsDockTotal-pointLuneTotal);
 						pointLuneTotal=Math.round(pointLuneTotal);
 						PointsBatimentsTotal=Math.round(PointsBatimentsTotal);
+                        PointsDockTotal=Math.round(PointsDockTotal);
 						PointsMinesTotal=Math.round(PointsMinesTotal);
 						PointsTechno=Math.round(PointsTechno);
 						PointsDefTotal=Math.round(PointsDefTotal);
@@ -3374,10 +3401,10 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						if(text.date.DMY ) date = dates[2] +' '+text.date[dates[1]]+ ' '+ dates[3];
 						else date = text.date[dates[1]] +' '+dates[2] + ' '+ dates[3];
 
-						var	PointRef = GM_getValue(nomScript+"PointRef"+coordPM+serveur,''+PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';true;'+PointsTotal+';'+(Date.parse(new Date())/1000-2)+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';;;;').split(/;/);
+						var	PointRef = GM_getValue(nomScript+"PointRef"+coordPM+serveur,''+PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';true;'+PointsTotal+';'+(Date.parse(new Date())/1000-2)+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';'+PointsDockTotal+';;;').split(/;/);
 						if(PointRef[7] == 'true' && manqueBat =='' && manqueDef =='' && manqueMine ==''&& PointsTechno != -1) // Si y'avais rien d'enregistré on enregistre
 						{
-							GM_setValue(nomScript+"PointRef"+coordPM+serveur,PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';false;'+PointsTotal+';'+(Date.parse(new Date()) / 1000)+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';;;;;;');
+							GM_setValue(nomScript+"PointRef"+coordPM+serveur,PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';false;'+PointsTotal+';'+(Date.parse(new Date()) / 1000)+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';'+PointsDockTotal+';;;;;');
 						}
 
 						PointRef[0] = parseInt(PointRef[0]);
@@ -3388,6 +3415,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						PointRef[6] = parseInt(PointRef[6]);
 						PointRef[10] = parseInt(PointRef[10]);
 						PointRef[14] = parseInt(PointRef[14]);
+                        PointRef[16] = parseInt(PointRef[16]); // Points dock total
 
 						if(accStartTime<1)
 						{
@@ -3438,9 +3466,10 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						code+= '['+center+'][u][size='+size2+']'+text.bbcode.rapport+' '+DATA.info.player+' uni '+numUni+'[/size] \n ';
 						code+= text.bbcode.genere+'[color=#'+options.couleur.CoulBBcode+'] '+date+' [/color] by [url=http://vulca.1s.fr/][color=#'+CoulBBcode+']InfoCompte[/color][/url] [color=#'+CoulBBcode+']v'+Version+'[/color][/u][/'+centerFin+']\n\n\n';
 
-						code+= ' [u][size='+size2+'][color=#'+options.couleur.CoulBBcode2+'] '+text.bbcode.empirePoint+' [/color][/size][/u]\n';
+						code+= ' [u][size='+size2+'][color=#'+options.couleur.CoulBBcode2+']'+text.bbcode.empirePoint+'[/color][/size][/u]\n';
 						code+= '- '+text.BBcode_mine +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsMinesTotal)+' ( '+pourcent(PointsMinesTotal,PointsTotal)+' %)[/color]\n';
 						code+= '- '+text.BBcode_bat +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsBatimentsTotal)+' ( '+pourcent(PointsBatimentsTotal,PointsTotal)+' %)[/color]\n';
+                        code+= '- '+text.BBcode_dock +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsDockTotal)+' ( '+pourcent(PointsDockTotal,PointsTotal)+' %)[/color]\n';
 						code+= '- '+text.BBcode_fin3 +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsDefTotal)+' ( '+pourcent(PointsDefTotal,PointsTotal)+' %)[/color]\n';
 						code+= '- '+text.BBcode_fin1 +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsTechno)+' ( '+pourcent(PointsTechno,PointsTotal)+' %)[/color]\n';
 						code+= '- '+text.Bcode_fin2 +' [color=#'+options.couleur.CoulBBcode+']'+addPoints(PointsFlotteTotal) + ' ( '+pourcent(PointsFlotteTotal,PointsTotal)+' %)[/color]\n';
@@ -3709,6 +3738,11 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							nbAfficher++;
 							BBcode+=text.BBcode_mine+"[b][color=#ff0000]"+addPoints(PointsMinesTotal)+"[/color][/b] ("+text.soit+" [b][color=#ff0000]"+pourcent(PointsMinesTotal,PointsTotal)+"[/color][/b] %)\n";
 						}
+                        if(options.generale.Dock)
+						{
+							nbAfficher++;
+							BBcode+=text.BBcode_dock+"[b][color=#ff0000]"+addPoints(PointsDockTotal)+"[/color][/b] ("+text.soit+" [b][color=#ff0000]"+pourcent(PointsDockTotal,PointsTotal)+"[/color][/b] %)\n";
+						}
 						if(options.generale.AutreBat)
 						{
 							nbAfficher++;
@@ -3717,7 +3751,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						if(options.generale.BatTotal)
 						{
 							nbAfficher++;
-							BBcode+=text.BBcode_batT+"[b][color=#ff0000]"+addPoints(PointsMinesTotal+PointsBatimentsTotal)+"[/color][/b] ("+text.soit+" [b][color=#ff0000]"+pourcent(PointsMinesTotal+PointsBatimentsTotal,PointsTotal)+"[/color][/b] %) \n";
+							BBcode+=text.BBcode_batT+"[b][color=#ff0000]"+addPoints(PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)+"[/color][/b] ("+text.soit+" [b][color=#ff0000]"+pourcent(PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal,PointsTotal)+"[/color][/b] %) \n";
 						}
 
 						BBcode+=text.BBcode_fin1+"[b][color=#ff0000]"+addPoints(PointsTechno)+"[/color][/b] ("+text.soit+" [b][color=#ff0000]"+pourcent(PointsTechno,PointsTotal)+"[/color][/b] %)\n";;
@@ -3872,6 +3906,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 
 						var Color_mine= 'style="color: #FFFFFF;"';
 						var Color_autreBat= 'style="color: #FFFFFF;"';
+                        var Color_dock= 'style="color: #FFFFFF;"';
 						var Color_batTotal= 'style="color: #FFFFFF;"';
 						var Color_techno= 'style="color: #FFFFFF;"';
 						var Color_flotte= 'style="color: #FFFFFF;"';
@@ -3892,8 +3927,11 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							if( PointsBatimentsTotal>PointRef[3]+1) 		{Color_autreBat= 'style="color: #'+options.couleur.progPos+';"';}
 							else if (PointsBatimentsTotal<PointRef[3]-1) 	{Color_autreBat= 'style="color: #'+options.couleur.progNeg+';"';}
 
-							if((PointsMinesTotal+PointsBatimentsTotal)>(PointRef[2]+PointRef[3]+1)) 			{Color_batTotal= 'style="color: #'+options.couleur.progPos+';"';}
-							else if ((PointsMinesTotal+PointsBatimentsTotal)<(PointRef[2]+PointRef[3]) -1)  	{Color_batTotal= 'style="color: #'+options.couleur.progNeg+';"';}
+                            if( PointsDockTotal>PointRef[16]+1) 		{Color_dock= 'style="color: #'+options.couleur.progPos+';"';}
+							else if (PointsDockTotal<PointRef[16]-1) 	{Color_dock= 'style="color: #'+options.couleur.progNeg+';"';}
+
+							if((PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)>(PointRef[2]+PointRef[3]+PointRef[16]+1)) 			{Color_batTotal= 'style="color: #'+options.couleur.progPos+';"';}
+							else if ((PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)<(PointRef[2]+PointRef[3]+PointRef[16]) -1)  	{Color_batTotal= 'style="color: #'+options.couleur.progNeg+';"';}
 
 							if( PointsTechno>PointRef[4]+1) 			{Color_techno= 'style="color: #'+options.couleur.progPos+';"';}
 							else if (PointsTechno<PointRef[4] -1) 		{Color_techno= 'style="color: #'+options.couleur.progNeg+';"';}
@@ -4038,8 +4076,10 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							{affiche +='<tr id="tr_mines"><th width="4px"></th><th style="'+th_style+'" >'+text.Mines+'</th><th style="width:250px; '+th_style+'" ><a '+Color_mine+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round(PointsMinesTotal-PointRef[2]))+' '+text.Points+' ('+pourcent(PointsMinesTotal-PointRef[2],PointRef[2])+' %) <br />'+text.tag.m+' : '+addPoints(Math.round(PointsMinesMetalTotal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(PointsMinesCristalTotal))+'<br />'+text.tag.m+'/'+text.tag.c+' = '+(Math.round(((Math.round(PointsMinesMetalTotal))*100/Math.round(PointsMinesCristalTotal)))/100)+'">'+addPoints(PointsMinesTotal)+' ('+pourcent(PointsMinesTotal,PointsTotal)+' %) </a></th><th   style="'+th_style+'" rowspan='+nbAfficher+' id="piebox" colspan="2"></th><th><a  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.affRentaPla+'"><img id="Rentabilite_mines" style="cursor:pointer;" src="data:image/gif;base64,'+codeImg+'"/></a><th></tr>';}
 						if(options.generale.AutreBat)
 							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+text.Other_structure+'</th><th style="width:250px; '+th_style+'" ><a '+Color_autreBat+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round(PointsBatimentsTotal-PointRef[3]))+' '+text.Points+'  ('+pourcent(PointsBatimentsTotal-PointRef[3],PointRef[3])+' %)<br />'+text.tag.m+' : '+addPoints(Math.round(PointsBatMetalTotal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(PointsBatCristalTotal))+'<br />'+text.tag.d+' : '+addPoints(Math.round(PointsBatDeutTotal))+'">'+addPoints(PointsBatimentsTotal)+' ('+pourcent(PointsBatimentsTotal,PointsTotal)+' %)  </a>'+affichePointLune+'</th><th class="IFC_th2"></th></tr>';}
+                        if(options.generale.Dock)
+							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+text.Dock+'</th><th style="width:250px; '+th_style+'" ><a '+Color_dock+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round(PointsDockTotal-PointRef[16]))+' '+text.Points+'  ('+pourcent(PointsDockTotal-PointRef[16],PointRef[16])+' %)<br />'+text.tag.m+' : '+addPoints(Math.round(PointsDockMetalTotal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(0))+'<br />'+text.tag.d+' : '+addPoints(Math.round(PointsDockDeutTotal))+'">'+addPoints(PointsDockTotal)+' ('+pourcent(PointsDockTotal,PointsTotal)+' %)  </a>'+affichePointLune+'</th><th class="IFC_th2"></th></tr>';}
 						if(options.generale.BatTotal)
-							{affiche +='<tr id="tr_mines"><th width="4px"></th><th style="'+th_style+'" >'+text.Structure+'</th><th style="width:250px; '+th_style+'" ><a '+Color_batTotal+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round((PointsMinesTotal+PointsBatimentsTotal)-(PointRef[2]+PointRef[3])))+' '+text.Points+' ('+pourcent((PointsMinesTotal+PointsBatimentsTotal)-(PointRef[2]+PointRef[3]),PointRef[2]+PointRef[3])+' %)<br />'+text.tag.m+' : '+addPoints(Math.round(PointsMinesMetalTotal+PointsBatMetalTotal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(PointsMinesCristalTotal+PointsBatCristalTotal))+'<br />'+text.tag.d+' : '+addPoints(Math.round(PointsMinesDeutTotal+PointsBatDeutTotal))+'">'+addPoints(PointsMinesTotal+PointsBatimentsTotal)+' ('+pourcent(PointsMinesTotal+PointsBatimentsTotal,PointsTotal)+' %)  </a>'+affichePointLune+' <a class="tooltipRight js_hideTipOnMobile"  TITLE="'+text.affRentaPla+'"><img id="Rentabilite_mines" style="cursor:pointer;" src="data:image/gif;base64,'+codeImg+'"/></a></th><th   style="'+th_style+'" rowspan='+nbAfficher+' id="piebox" colspan="2"></th></tr>';}
+							{affiche +='<tr id="tr_mines"><th width="4px"></th><th style="'+th_style+'" >'+text.Structure+'</th><th style="width:250px; '+th_style+'" ><a '+Color_batTotal+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round((PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)-(PointRef[2]+PointRef[3]+PointRef[16])))+' '+text.Points+' ('+pourcent((PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)-(PointRef[2]+PointRef[3]+PointRef[16]),PointRef[2]+PointRef[3]+PointRef[16])+' %)<br />'+text.tag.m+' : '+addPoints(Math.round(PointsMinesMetalTotal+PointsBatMetalTotal+PointsDockMetalTotal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(PointsMinesCristalTotal+PointsBatCristalTotal))+'<br />'+text.tag.d+' : '+addPoints(Math.round(PointsMinesDeutTotal+PointsBatDeutTotal+PointsDockDeutTotal))+'">'+addPoints(PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal)+' ('+pourcent(PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal,PointsTotal)+' %)  </a>'+affichePointLune+' <a class="tooltipRight js_hideTipOnMobile"  TITLE="'+text.affRentaPla+'"><img id="Rentabilite_mines" style="cursor:pointer;" src="data:image/gif;base64,'+codeImg+'"/></a></th><th   style="'+th_style+'" rowspan='+nbAfficher+' id="piebox" colspan="2"></th></tr>';}
 						if(options.generale.techno)
 							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+text.Technology+'</th><th style="width:250px; '+th_style+'" ><a '+Color_techno+' class="tooltipRight js_hideTipOnMobile" TITLE="'+plus(Math.round(PointsTechno-PointRef[4]))+' '+text.Points+' ('+pourcent(PointsTechno-PointRef[4],PointRef[4])+' %)<br />'+text.tag.m+' : '+addPoints(Math.round(PointsTechnoMetal))+'<br />'+text.tag.c+' : '+addPoints(Math.round(PointsTechnoCristal))+'<br />'+text.tag.d+' : '+addPoints(Math.round(PointsTechnoDeut))+'">'+addPoints(PointsTechno)+' ('+pourcent(PointsTechno,PointsTotal)+' %) </a> '+rankRes+'</th><th class="IFC_th2"></th></tr>';}
 						if(options.generale.flottes)
@@ -4051,7 +4091,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						if(options.generale.constructing)
 							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+text.constructing+'</th><th style="width:250px; '+th_style+'" class="tooltipRight js_hideTipOnMobile" TITLE="'+DATA.planet[numeroplanete].name+' : '+addPoints(Math.round(ConstructingPla))+' ('+pourcent(ConstructingPla,Constructing)+' %) <br />'+table_tooltip_constructing+'" >'+addPoints(Math.round(Constructing))+' ('+pourcent(Constructing,PointsTotal)+' %)  '+rankConst+'</th><th class="IFC_th2"></th></tr>';}
 						if(options.generale.Point_planete)
-							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+DATA.planet[numeroplanete].name+'</th><th  id="listePla" colspan="3" style="'+th_style+'" ><a style="color: #FFFFFF;"  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.Mines+': '+addPoints(PointsMinesTotalP[numeroplanete])+' ('+pourcent(PointsMinesTotalP[numeroplanete],PointPlanete)+' %) | '+text.Other_structure+': '+addPoints(PointsBatimentsTotalP[numeroplanete])+' ('+pourcent(PointsBatimentsTotalP[numeroplanete],PointPlanete)+' %) | '+text.Defense+': '+addPoints(PointsDefTotalP[numeroplanete])+' ('+pourcent(PointsDefTotalP[numeroplanete],PointPlanete)+' %)">'+ addPoints(PointPlanete) +' '+text.Points+' ('+pourcent(PointPlanete,PointsTotal)+' %) </a></th><th   style="background-color:transparent;"><a  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.affDetailPla+'"><img id="Point_planete" style="cursor:pointer;" src="data:image/gif;base64,'+codeImg+'"/></a><th></th></th></tr>';}
+							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+DATA.planet[numeroplanete].name+'</th><th  id="listePla" colspan="3" style="'+th_style+'" ><a style="color: #FFFFFF;"  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.Mines+': '+addPoints(PointsMinesTotalP[numeroplanete])+' ('+pourcent(PointsMinesTotalP[numeroplanete],PointPlanete)+' %) | '+text.Other_structure+': '+addPoints(PointsBatimentsTotalP[numeroplanete])+' ('+pourcent(PointsBatimentsTotalP[numeroplanete],PointPlanete)+' %) | '+text.Dock+': '+addPoints(PointsDockTotalP[numeroplanete])+' ('+pourcent(PointsDockTotalP[numeroplanete],PointPlanete)+' %) | '+text.Defense+': '+addPoints(PointsDefTotalP[numeroplanete])+' ('+pourcent(PointsDefTotalP[numeroplanete],PointPlanete)+' %)">'+ addPoints(PointPlanete) +' '+text.Points+' ('+pourcent(PointPlanete,PointsTotal)+' %) </a></th><th   style="background-color:transparent;"><a  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.affDetailPla+'"><img id="Point_planete" style="cursor:pointer;" src="data:image/gif;base64,'+codeImg+'"/></a><th></th></th></tr>';}
 						if (options.generale.progression)
 							{affiche +='<tr ><th width="4px"></th><th style="'+th_style+'" >'+text.Progression+'</th><th colspan="3" style="'+th_style+'" ><a style="color: #FFFFFF;"  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.Mines+': '+plus(Math.round(PointsMinesTotal-PointRef[2]))+' ('+pourcent(PointsMinesTotal-PointRef[2],PointsTotal-PointRef[0])+' %) | '+text.Other_structure+': '+plus(Math.round(PointsBatimentsTotal-PointRef[3]))+' ('+pourcent(PointsBatimentsTotal-PointRef[3],PointsTotal-PointRef[0])+' %) | '+text.Technology+': '+plus(Math.round(PointsTechno-PointRef[4]))+' ('+pourcent(PointsTechno-PointRef[4],PointsTotal-PointRef[0])+' %) | '+text.Fleet+': '+plus(Math.round(PointsFlotteTotal-PointRef[5]))+' ('+pourcent(PointsFlotteTotal-PointRef[5],PointsTotal-PointRef[0])+' %) | '+text.Defense+': '+plus(Math.round(PointsDefTotal-PointRef[6]))+' ('+pourcent(PointsDefTotal-PointRef[6],PointsTotal-PointRef[0])+' %)">'+addPoints(Math.round(PointsTotal-PointRef[0]))+' '+text.Points+' (' +pourcent((PointsTotal-PointRef[0]),PointRef[0]) +' %) '+text.Depuis+' '+PointRef[1]+' => '+addPoints(Math.round((PointsTotal-PointRef[0])/arrondi((Date.parse(new Date())-PointRef[10])/(1000*3600*24))))+' '+text.Point_day+'</a>'+rankTot+'</th><th   style="background-color:transparent;"><a  class="tooltipRight js_hideTipOnMobile" TITLE="'+text.restart+'"><img id="pointRef" style="cursor:pointer" src="data:image/gif;base64,'+codeImg+'"/></a></th><th></th></tr>';	}
 						if (options.generale.ProgJours)
@@ -4120,9 +4160,9 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						}
 						// ****************************** Affichage du graphique *******************************
 						if (options.generale.mine)
-							{var pie = draw_pie([pourcent(PointsMinesTotal,PointsTotal),pourcent(PointsBatimentsTotal,PointsTotal),pourcent(PointsTechno,PointsTotal),pourcent(PointsFlotteTotal,PointsTotal),pourcent(PointsDefTotal,PointsTotal)]);}
+							{var pie = draw_pie([pourcent(PointsMinesTotal,PointsTotal),pourcent(PointsBatimentsTotal,PointsTotal),pourcent(PointsTechno,PointsTotal),pourcent(PointsFlotteTotal,PointsTotal),pourcent(PointsDefTotal,PointsTotal),pourcent(PointsDockTotal,PointsTotal)]);}
 						else if(options.generale.BatTotal)
-							{var pie = draw_pie([pourcent(PointsMinesTotal+PointsBatimentsTotal,PointsTotal),pourcent(PointsTechno,PointsTotal),pourcent(PointsFlotteTotal,PointsTotal),pourcent(PointsDefTotal,PointsTotal)]);}
+							{var pie = draw_pie([pourcent(PointsMinesTotal+PointsBatimentsTotal+PointsDockTotal,PointsTotal),pourcent(PointsTechno,PointsTotal),pourcent(PointsFlotteTotal,PointsTotal),pourcent(PointsDefTotal,PointsTotal)]);}
 						var piebox = document.getElementById('piebox');
 						if (piebox) {piebox.appendChild(pie)};
 
@@ -4206,7 +4246,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 										img = 'background-image: url(data:image/gif;base64,R0lGODlhEAAQAPf/ACArPYqewre62VRjepeZuMTJ53uTtxQaLbnD6f3+/zJBU9bd9xsyShskOOTr+yIsQa+85czX9nWOs4SKqBYdMTpRahw3U2ZxjNvk+nJ8mRsrQiMySTtfhB0oOVtqhCo9Upus00hhfISavik5SS1CUjNEWENTaXKLriU1RGN9oyM6Uo2ixSg1SS09TExccRkkNBggMSxCWjxMYTA9UYucvRkhNDJKYyEwQSQ3TBUhMxEVKQoRGQ0WIWqGq1NzmpOiw5OfwIGWu2uCo3WAnaKu0mR7nWt1kpury3ODo2NzkqWz3GFthnuMrqusyytKa117oqW00zRJW3qEojlIXKKkw4OUtOzx/ZOlyiI8WFhwjyRBXENadBMfKxsnNqSry42Ss8vR7iUxRWt7nJuhwqyz0x4oPFBfdVJsjElskh4sPWOCpipFYFtzlUFRZStJZTJTc7jC3ktjg8PO8ktqiiQyQvb6/jdFWSNDZElZbjtTbyg1RS1ATkNjhEJceRQrRVx5nSI9YW2JrTpafFh1nCk9TCAxRV1uilRphPL2/aayzhwlNUBkiVNmgTFTeL7K8BotSBAaJTNNaUBLZxMjOWx3lSg4RlNylURojSo8SsG93jVZfK663So+WKm23iEvPYKPsEJegyk5TYqQrdPU8CQ0QmWDqR82Tyw8Sk1wljFFYExohiE0RXCFqDBNcau51iREaJepzSw4TBYtSiU3RsPD4B4sOkFVcStMcj1Yc7CuzhclMDpNaCxRdGF2mTA4TxknOaqmxaKox4iXuSw6SRkpPpqmzG6LsZ+du5upxjhVekdWayk1UKqqxbS00J+w14OYtyVJbEteelJukJWoxiI1QRktPXuIp7ex0kNXbc/N6SpFaCE2WRsiNpOTsRQoPjxCYTFHVkZoh0hliDxffS9JXKCwzqChv3qIqlpnfx4vPhceLhAXIi9AUFd3n6aoyI+Yt3OIqGV3mBorOXiQsR0/XBowUDZYdidIZhkoQYCEoWt3mS9QbpCOqlBniGBwjwQGCyH5BAEAAP8ALAAAAAAQABAAAAj/AP8JFLhOXCclTNQNXPiPR6MgBgwkcgDH2TqGMV4ZeIIgAaIEDpSg0TSQh7Zknww4WOGgzoJOEpQcEFjPjbYArH78mLdCggQDsJz9g0Tigw1bXsYISJSgToEgaDhwoabiA6NDohCNsQIE2ah5ROxZoFDrVygZh44FO8bs05kQ4d5g0QWjRqUGURhJQXJNyickbixYoNOBmAJFD/IZMZLBUJwKW/D54bJBEZcOFNjJGMDIzJYZGkJB+kcKQANFOLhNsWXGhQIWYR4IhDQiDZcROg5MmcKC240XXAaSINTB040DN+wAuPFA4UJIpHK80NOBkAxPwRkK1IEJ04gDLxgGAQQAOw==);background-repeat:no-repeat;background-position:top right;padding-right: 15px;';
 								else 	img = '';
 
-								aff+= '<tr><td style="text-align:left;font-size:0.75em;'+img+'">'+DATA.planet[f].name +'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphA+';">'+addPoints(Math.round(PointsMinesTotalP[f]))+'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphB+';">'+addPoints(Math.round(PointsBatimentsTotalP[f]))+'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphE+';">'+addPoints(Math.round(PointsDefTotalP[f]))+'</td><td style="font-size:0.75em;text-align:left;">=> '+addPoints(Math.round(PointsMinesTotalP[f]+PointsBatimentsTotalP[f]+PointsDefTotalP[f]))+' ('+pourcent(PointsMinesTotalP[f]+PointsBatimentsTotalP[f]+PointsDefTotalP[f],PointsTotal)+' %) </td></tr>';
+								aff+= '<tr><td style="text-align:left;font-size:0.75em;'+img+'">'+DATA.planet[f].name +'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphA+';">'+addPoints(Math.round(PointsMinesTotalP[f]))+'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphB+';">'+addPoints(Math.round(PointsBatimentsTotalP[f]))+'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphB+';">'+addPoints(Math.round(PointsDockTotalP[f]))+'</td><td style="font-size:0.75em;text-align:right;color:#'+options.couleur.graphE+';">'+addPoints(Math.round(PointsDefTotalP[f]))+'</td><td style="font-size:0.75em;text-align:left;">=> '+addPoints(Math.round(PointsMinesTotalP[f]+PointsBatimentsTotalP[f]+PointsDockTotalP[f]+PointsDefTotalP[f]))+' ('+pourcent(PointsMinesTotalP[f]+PointsBatimentsTotalP[f]+PointsDockTotalP[f]+PointsDefTotalP[f],PointsTotal)+' %) </td></tr>';
 							}
 							//console.log("listePla");
 							document.getElementById('listePla').innerHTML= aff+'</table><br/>' ;
@@ -4724,7 +4764,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 							{
 								if(confirm(text.Avertissement))
 								{
-								GM_setValue(nomScript+"PointRef"+coordPM+serveur,PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';false;'+PointRef[8]+';'+PointRef[9]+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';;;');
+								GM_setValue(nomScript+"PointRef"+coordPM+serveur,PointsTotal+';'+date+';'+PointsMinesTotal+';'+PointsBatimentsTotal+';'+PointsTechno+';'+PointsFlotteTotal+';'+PointsDefTotal+';false;'+PointRef[8]+';'+PointRef[9]+';'+start_time+';'+Actuelrank[2]+';'+Actuelrank[1]+';'+Actuelrank[3]+';'+PointIndest+';'+Actuelrank[0]+';'+PointsDockTotal+';;');
 
 								}
 							}, true);
