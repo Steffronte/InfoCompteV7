@@ -2,8 +2,8 @@
 // @name           InfoCompte7
 // @namespace   2c7e63c68903f0a8b63d7bfdd749d871
 // @description    InfoCompte
-// @vOGgame        7.9.9
-// @version        7.0.17.stef
+// @vOGgame        8.9.9
+// @version        7.0.19.stef
 // @author         Vulca & now benneb
 // @grant		   GM_getValue
 // @grant		   GM_setValue
@@ -21,7 +21,7 @@
 // @exclude        *.ogame*gameforge.com/game/index.php?page=displayMessageNewPage*
 // ==/UserScript==
 
-var Version = '7.0.17.stef';
+var Version = '8.0.19.stef';
 //var numberUserscript = '133137';
 
 var start_time = (new Date()).getTime();
@@ -593,7 +593,7 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 			if(version_table.length > 0)
 			{
 				var version = version_table[0].content;
-				version_ogame_ok = version.startsWith('7');
+				version_ogame_ok = version.startsWith('7') || version.startsWith('8');
 			}
 
 		if(true && (version_ogame_ok /*|| url.indexOf ('ajax&component=technologytree&ajax=1&technologyId=1&tab=3')*/))
@@ -2768,10 +2768,12 @@ var adresse_forum = "http://board.origin.ogame.de/board6-origin/board38-tools-sc
 						var exposant_tech = new Array(2,2,2,2,2,2,2,2,2,2,2,2,2,2,1.75);
 
 						var nom_bat = new Array(          'mmet', 'mcri' , 'mdet', 'ces', 'cef', 'nan', 'lab', 'ter', 'silo', 'depo', 'cspa','rob', 'hmet', 'hcri', 'hdet', 'base', 'phal', 'port', 'dock');
-						var prixInitial_bat = new Array(0.075,0.072,0.3,0.105,1.44,1600,0.8,150,41,60,0.7,0.72,1,1.5,2,80,80,8000,0.25);
+						//var prixInitial_bat             = new Array(0.075, 0.072,     0.3  ,0.105,   1.44, 1600, 0.8, 150, 41, 60, 0.7, 0.720,1, 1.5, 2, 80,  80, 8000,  2);
+						var prixInitial_bat             = new Array(0.075, 0.072,     0.3,  0.105,   1.44, 1600, 0.8, 150, 41, 60, 0.7, 0.72 ,1, 1.5, 2, 80,  80, 8000, 0.25);
 						var prixInitial_batMineMetal   = new Array(0.060, 0.048,     0.225,0.075,   0.9  ,1000,  0.2 ,   0    , 20,     20,     0.4,  0.4    ,1,      1,      1,       20,     20,    2000 , 0.2);
 						var prixInitial_batMineCristal = new Array(0.015, 0.024,     0.075,0.03 ,   0.36 ,500 ,  0.4 ,   50   , 20,     40,     0.2,  0.12   ,0,      0.5,    1,       40,     40,    4000 , 0);
 						var prixInitial_batMineDeut    = new Array(0    , 0    ,     0    ,0    ,   0.18 ,100 ,  0.2 ,   100  , 1 ,     0,      0.1,  0.2    ,0,      0,      0,       20,     20,    2000 , 0.05);
+						//var exposant = new Array(1.5,1.6,1.5,1.5,1.8,2,2,2,2,2,2,2,2,2,2,2,2,2,2.3,2.3,2.3);
 						var exposant = new Array(1.5,1.6,1.5,1.5,1.8,2,2,2,2,2,2,2,2,2,2,2,2,2,5);
 
 						var OrdreBat = {'mmet':0, 'mcri':1 , 'mdet':2, 'ces':3, 'cef':4, 'nan':5, 'lab':6, 'ter':7, 'silo':8, 'depo':9, 'cspa':10,'rob':11, 'hmet':12, 'hcri':13, 'hdet':14, 'base':15, 'phal':16, 'port':17, 'dock':18}
